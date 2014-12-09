@@ -7,23 +7,30 @@ clear;
 close all;
 clc;
 
-%------------Your script starts here--------
-sender_args.port    = 4245; % port which the android device addresses
-sender_args.timeout = 2000; % time (in ms) to wait for a connection (per try)
+%% To test the UDP class you have to run two instances of matlab.
+%  One as reader and one as sender.
 
-sender_args.port    = 4245; % port which the android device addresses
-reader_args.ip      = '139.13.130.197'; % IP to send the message to
-sender_args.timeout = 5000; % time (in ms) to wait for a connection (per try)
+TEST_READER = false;
 
-% create UDP object and get function handles
-sender   = MatlabUDP( sender_args );
-receiver = MatlabUDP( reader_args );
-
-sender.write( 'Hello Server!' ); % send message to server
-
-msg = receiver.read();             % send message to server
-disp( msg );
-
+if( TEST_READER ),
+    %% create and test UDP reader
+    reader_args.port    = 4245; % port which the android device addresses
+    reader_args.timeout = 5000; % time (in ms) to wait for a connection (per try)
+    
+    % create UDP object and get function handles
+    receiver = MatlabUDP( reader_args );
+    
+    msg = receiver.read();      % read message from server
+    disp( msg );
+else
+    %% create and test UDP sender
+    sender_args.port    = 4245; % port which the android device addresses
+    sender_args.ip      = '139.13.130.197'; % IP to send the message to
+    
+    % create UDP object and get function handles
+    sender   = MatlabUDP( sender_args );
+    sender.write( 'Hello Server!' );        % send message to server
+end
 %--------------------Licence ---------------------------------------------
 % Copyright (c) <2014> Felix Dollack
 % Jade University of Applied Sciences 

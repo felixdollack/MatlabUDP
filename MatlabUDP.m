@@ -97,7 +97,7 @@ classdef MatlabUDP < handle
                 data = data( 1:in_buffer.getLength );
                 remote_host = in_buffer.getAddress;
                 remote_ip = char( remote_host.getHostAddress );
-                varargout{ 1 } = data;
+                varargout{ 1 } = char( data )';
                 if( nargout > 1 ),
                     varargout{ 2 } = remote_ip;
                 end
